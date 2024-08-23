@@ -18,6 +18,7 @@ import java.util.Optional;
 public class ItemController {
     private final ItemRepository itemRepository;
     private final PostRepository postRepository;
+    private final ItemService itemService;
 
     @GetMapping("/list")
     String list(Model model) {
@@ -35,20 +36,14 @@ public class ItemController {
 
     @PostMapping("/add")
     String addPost(@RequestParam Map formData){
-        Item item = new Item();
-        item.setTitle((String) formData.get("title"));
-        item.setPrice(Integer.parseInt((String) formData.get("price")));
-        itemRepository.save(item);
+        itemService.saveItem(formData);
         return "redirect:/list";
     };
 
     @GetMapping("/detail/{id}")
     String detail(@PathVariable Long id, Model model){
         Optional<Item> result = itemRepository.findById(id);
-        if(result.isPresent()){
-            System.out.println(result.get());
-            model.addAttribute("item", result.get());
-        }
+        result.ifPresent(item -> model.addAttribute("item", item));
         return "detail.html";
     }
 }
