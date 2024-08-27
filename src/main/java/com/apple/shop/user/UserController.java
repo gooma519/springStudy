@@ -1,6 +1,7 @@
 package com.apple.shop.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,16 +14,30 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @GetMapping("/signup")
-    String signup() {
+    public String signup() {
         return "signup.html";
     }
 
     @PostMapping("/signup")
-    String signup(@RequestParam Map formData) {
-        System.out.println(formData);
+    public String signup(@RequestParam Map formData) {
         userService.signup(formData);
         return "redirect:/signup";
     }
+
+    @GetMapping("/signin")
+    public String signin() {
+        return "signin.html";
+    }
+
+    @GetMapping("/mypage")
+    public String mypage(Authentication auth) {
+        if(auth != null) {
+            return "mypage.html";
+        }
+        return "signin.html";
+    }
+
 }

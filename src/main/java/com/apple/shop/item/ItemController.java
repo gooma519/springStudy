@@ -5,6 +5,7 @@ import com.apple.shop.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,16 @@ public class ItemController {
     }
 
     @GetMapping("/write")
-    String write(Model model) {
-        return "write.html";
+    String write(Model model, Authentication auth) {
+        if(auth != null) {
+            return "write.html";
+        }
+        return "signin.html";
     }
 
     @PostMapping("/add")
-    String addPost(@RequestParam Map formData){
-        itemService.saveItem(formData);
+    String addPost(@RequestParam Map formData, Authentication auth){
+        itemService.saveItem(formData, auth.getName());
         return "redirect:/list";
     };
 
@@ -57,12 +61,6 @@ public class ItemController {
         itemService.updateItem(id, formData);
         return "redirect:/list";
     }
-
-//    @GetMapping("/test1")
-//    String test1(){
-//        System.out.println("실행");
-//        return "redirect:/list";
-//    }
 
     @PostMapping("/test")
     String test(@RequestBody Map<String, Object> formData){

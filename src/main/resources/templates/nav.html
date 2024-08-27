@@ -2,5 +2,10 @@
     <a class="logo">SpringMall</a>
     <a href="/list">List</a>
     <a href="/write">Write</a>
-    <button><a href="/signup">로그인</a></button>
+    <div sec:authorize="isAnonymous()">
+        <a href="/signin"><button>로그인</button></a>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <a href="/logout"><button>로그아웃</button></a>
+    </div>
 </div>

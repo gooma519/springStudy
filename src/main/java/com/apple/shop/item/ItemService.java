@@ -11,10 +11,11 @@ import java.util.Optional;
 public class ItemService {
     private final ItemRepository itemRepository;
 
-    public void saveItem(Map formData){
+    public void saveItem(Map formData, String username){
         Item item = new Item();
         item.setTitle((String) formData.get("title"));
         item.setPrice(Integer.parseInt((String) formData.get("price")));
+        item.setUsername(username);
         itemRepository.save(item);
     }
 

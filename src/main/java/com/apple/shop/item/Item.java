@@ -16,5 +16,6 @@ public class Item {
     @Column(nullable = false)
     private String title;
     private Integer price;
+    private String username;
 }
 

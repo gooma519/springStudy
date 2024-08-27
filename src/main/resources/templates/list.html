@@ -17,6 +17,7 @@
         <p th:text="${item.price}"></p>
         <a th:href="@{'/edit/'+${item.id}}">✏️</a>
         <span class="delete" th:onclick="deleteItem([[${item.id}]])">🗑️</span>
+        <p th:text="${item.username}"></p>
     </div>
 </div>
 <div class="card"  th:each="post : ${posts}">
@@ -26,7 +27,7 @@
     </div>
 </div>
 <button class="btn">버튼</button>
-<script>
+<script th:inline="javascript">
     document.querySelector('.btn').addEventListener('click', ()=>{
         fetch('/test', {
             method : 'POST',
