@@ -3,12 +3,10 @@ package com.apple.shop.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,4 +38,10 @@ public class UserController {
         return "signin.html";
     }
 
+    @GetMapping("/user/{id}")
+    @ResponseBody
+    public UserDTO getUser(@PathVariable Long id) {
+        UserDTO data = userService.getUser(id);
+        return data;
+    }
 }

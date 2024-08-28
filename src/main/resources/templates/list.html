@@ -20,13 +20,6 @@
         <p th:text="${item.username}"></p>
     </div>
 </div>
-<div class="card"  th:each="post : ${posts}">
-    <div>
-        <h4 th:text="${post.title}"></h4>
-        <p th:text="${post.postDate}"></p>
-    </div>
-</div>
-<button class="btn">버튼</button>
 <script th:inline="javascript">
     document.querySelector('.btn').addEventListener('click', ()=>{
         fetch('/test', {
