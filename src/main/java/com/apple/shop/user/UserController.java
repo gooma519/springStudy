@@ -35,7 +35,7 @@ public class UserController {
         if(auth != null) {
             return "mypage.html";
         }
-        return "signin.html";
+        return "redirect:/signin";
     }
 
     @GetMapping("/user/{id}")

@@ -1,8 +1,8 @@
 package com.apple.shop.item;
 
-import com.apple.shop.Post;
-import com.apple.shop.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,24 +16,21 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemRepository itemRepository;
-    private final PostRepository postRepository;
     private final ItemService itemService;
 
     @GetMapping("/list")
     String list(Model model) {
         List<Item> result = itemRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        List<Post> posts = postRepository.findAll();
         model.addAttribute("items", result);
-        model.addAttribute("posts", posts);
         return "list.html";
     }
 
     @GetMapping("/write")
-    String write(Model model, Authentication auth) {
+    String write(Authentication auth) {
         if(auth != null) {
             return "write.html";
         }
-        return "signin.html";
+        return "redirect:/signin";
     }
 
     @PostMapping("/add")
@@ -73,4 +70,13 @@ public class ItemController {
         itemService.deleteItem(id);
         return ResponseEntity.status(200).body("삭제완료");
     }
+
+    @GetMapping("/list/page/{page}")
+    String getListPage(@PathVariable Integer page,Model model) {
+        Page<Item> result = itemRepository.findPageBy(PageRequest.of(page - 1,5, Sort.by(Sort.Direction.ASC, "id")));
+        model.addAttribute("totalPage", result.getTotalPages());
+        model.addAttribute("items", result);
+        return "list.html";
+    }
+
 }
