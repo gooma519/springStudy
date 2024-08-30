@@ -1,5 +1,7 @@
 package com.apple.shop.item;
 
+import com.apple.shop.comment.Comment;
+import com.apple.shop.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,12 +19,14 @@ import java.util.*;
 public class ItemController {
     private final ItemRepository itemRepository;
     private final ItemService itemService;
+    private final S3Service s3Service;
+    private final CommentService commentService;
 
     @GetMapping("/list")
     String list(Model model) {
         List<Item> result = itemRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
         model.addAttribute("items", result);
-        return "list.html";
+        return "redirect:/list/page/1";
     }
 
     @GetMapping("/write")
@@ -42,7 +46,9 @@ public class ItemController {
     @GetMapping("/detail/{id}")
     String detail(@PathVariable Long id, Model model){
         Optional<Item> result = itemService.getItemById(id);
+        List<Comment> comment = commentService.getCommentByParentId(id);
         result.ifPresent(item -> model.addAttribute("item", item));
+        model.addAttribute("comment", comment);
         return "detail.html";
     }
 
@@ -77,6 +83,13 @@ public class ItemController {
         model.addAttribute("totalPage", result.getTotalPages());
         model.addAttribute("items", result);
         return "list.html";
+    }
+
+    @GetMapping("/presigned-url")
+    @ResponseBody
+    String getUrl(@RequestParam String filename){
+        var result = s3Service.createPresignedUrl("test/" + filename);
+        return  result;
     }
 
 }

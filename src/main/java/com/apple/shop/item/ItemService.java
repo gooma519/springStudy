@@ -16,6 +16,7 @@ public class ItemService {
         item.setTitle((String) formData.get("title"));
         item.setPrice(Integer.parseInt((String) formData.get("price")));
         item.setUsername(username);
+        item.setImgUrl((String) formData.get("img_url"));
         itemRepository.save(item);
     }
 

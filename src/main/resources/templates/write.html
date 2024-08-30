@@ -10,10 +10,35 @@
 </head>
 <body>
 <div th:replace="~{nav.html::navbar}" class="nav"></div>
-<form action="/add" method="post">
-    <input type="text" name="title">
-    <input type="number" name="price">
+<form action="/add" method="post" id="addForm" onsubmit="">
+    <input type="text" name="title" placeholder="title">
+    <input type="number" name="price" placeholder="price">
+    <input type="text" name="img_url" id="input-img" placeholder="이미지스트링" style="display: none">
     <button type="submit">전송</button>
 </form>
+<button onclick="btnClick()">button</button>
+<input type="file" name="" id="" onchange="getUrl(this)">
+<img src="" alt="">
+<script>
+
+    async function getUrl(e) {
+        let name = encodeURIComponent(e.files[0].name)
+        let result = await fetch(`/presigned-url?filename=${name}`)
+        result = await result.text()
+
+        let result2 = await fetch(result, {
+            method: 'PUT',
+            body: e.files[0]
+        })
+        console.log(result2.url.split("?")[0])
+        if(result2.ok){
+            let formData = new FormData(document.querySelector('#addForm'))
+            document.querySelector('img').src = result2.url.split("?")[0]
+            document.querySelector('#input-img').value = result2.url.split("?")[0]
+        }
+
+    }
+
+</script>
 </body>
 </html>

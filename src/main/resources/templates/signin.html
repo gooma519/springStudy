@@ -9,14 +9,15 @@
   <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-<div th:replace="~{nav.html::navbar}" class="nav"></div>
-<div th:if="${param.error}">
-  <h4>아이디나 비번 틀림</h4>
-</div>
-<form action="/signin" method="post">
-  <input type="text" name="username">
-  <input type="password" name="password">
-  <button type="submit">전송</button>
-</form>
+  <div th:replace="~{nav.html::navbar}" class="nav"></div>
+  <div th:if="${param.error}">
+    <h4>아이디나 비번 틀림</h4>
+  </div>
+  <form action="/signin" method="post">
+    <input type="text" name="username" placeholder="username">
+    <input type="password" name="password" placeholder="password">
+    <button type="submit">전송</button>
+  </form>
+  <a href="/signup">회원가입</a>
 </body>
 </html>

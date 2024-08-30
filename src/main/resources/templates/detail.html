@@ -12,9 +12,25 @@
 <div th:replace="~{nav.html::navbar}" class="nav"></div>
 <div class="detail">
     <h4>상세페이지</h4>
-    <img src="https://placehold.co/300">
+    <img th:src="${item.imgUrl != null ? item.imgUrl: 'https://placehold.co/300'}">
     <h4 th:text="${item.title}"></h4>
     <p th:text="${item.price + '원'}"></p>
+</div>
+<div class="comments-section">
+    <h2>댓글</h2>
+    <th:block th:if="${#lists.size(comment) > 0}">
+        <div class="comment" th:each="comment : ${comment}">
+            <div class="comment-header">
+                <span class="comment-username" th:text="${comment.username}"></span>
+            </div>
+            <p class="comment-text" th:text="${comment.content}"></p>
+        </div>
+    </th:block>
+    <th:block th:if="${#lists.size(comment) == 0}">댓글이 없습니다</th:block>
+    <form th:action="@{'/comment/'+${item.id}}" class="comment-form" method="post">
+        <textarea placeholder="여기에 댓글을 작성해주세요" rows="4" name="content"></textarea>
+        <button type="submit">작성하기</button>
+    </form>
 </div>
 </body>
 </html>

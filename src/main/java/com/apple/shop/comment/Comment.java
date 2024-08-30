@@ -1,4 +1,4 @@
-package com.apple.shop.item;
+package com.apple.shop.comment;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,17 +6,15 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@ToString
 @Getter
 @Setter
-public class Item {
+@ToString
+public class Comment {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String title;
-    private Integer price;
+    @Column(length = 1000)
+    private String content;
     private String username;
-    private String imgUrl;
+    private Long parentId;
 }
-

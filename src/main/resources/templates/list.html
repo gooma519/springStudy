@@ -11,7 +11,7 @@
 <body>
 <div th:replace="~{nav.html::navbar}" class="nav"></div>
 <div class="card"  th:each="item : ${items}">
-    <img src="https://placehold.co/300">
+    <img th:src="${item.imgUrl != null ? item.imgUrl: 'https://placehold.co/300'}">
     <div>
         <a th:text="${item.title}" th:href="@{'/detail/'+${item.id}}"></a>
         <p th:text="${item.price}"></p>
@@ -19,6 +19,11 @@
         <span class="delete" th:onclick="deleteItem([[${item.id}]])">🗑️</span>
         <p th:text="${item.username}"></p>
     </div>
+</div>
+<div class="pages">
+    <th:block th:each="num : ${#numbers.sequence(1, totalPage)}">
+        <a th:text="${num}" th:href="${num}" class="pageNum"></a>
+    </th:block>
 </div>
 <script th:inline="javascript">
     document.querySelector('.btn').addEventListener('click', ()=>{
