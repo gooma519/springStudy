@@ -2,6 +2,8 @@ package com.apple.shop.item;
 
 import com.apple.shop.comment.Comment;
 import com.apple.shop.comment.CommentService;
+import com.apple.shop.sales.SalesService;
+import com.apple.shop.user.CustomUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -90,6 +92,13 @@ public class ItemController {
     String getUrl(@RequestParam String filename){
         var result = s3Service.createPresignedUrl("test/" + filename);
         return  result;
+    }
+
+    @PostMapping("/search")
+    String search(@RequestParam String searchText, Model model) {
+        List<Item> result = itemRepository.findAllByTitleContains(searchText);
+        model.addAttribute("items", result);
+        return  "list.html";
     }
 
 }

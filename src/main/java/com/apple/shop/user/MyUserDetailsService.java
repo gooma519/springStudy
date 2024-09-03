@@ -27,6 +27,7 @@ public class MyUserDetailsService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("일반유저"));
         var customUser = new CustomUser(user.getUsername(), user.getPassword(), authorities);
         customUser.displayName = user.getDisplayName();
+        customUser.id = user.getId();
         return customUser;
     }
 }

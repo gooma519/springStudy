@@ -10,6 +10,10 @@
 </head>
 <body>
 <div th:replace="~{nav.html::navbar}" class="nav"></div>
+    <form action="/search" method="post" style="display: flex">
+        <input type="text" name="searchText">
+        <button>검색</button>
+    </form>
 <div class="card"  th:each="item : ${items}">
     <img th:src="${item.imgUrl != null ? item.imgUrl: 'https://placehold.co/300'}">
     <div>
@@ -20,22 +24,14 @@
         <p th:text="${item.username}"></p>
     </div>
 </div>
-<div class="pages">
-    <th:block th:each="num : ${#numbers.sequence(1, totalPage)}">
-        <a th:text="${num}" th:href="${num}" class="pageNum"></a>
+    <th:block th:if="${totalPage != null}">
+        <div class="pages">
+            <th:block th:each="num : ${#numbers.sequence(1, totalPage)}">
+                <a th:text="${num}" th:href="${num}" class="pageNum" onclick="pageClick"></a>
+            </th:block>
+        </div>
     </th:block>
-</div>
 <script th:inline="javascript">
-    document.querySelector('.btn').addEventListener('click', ()=>{
-        fetch('/test', {
-            method : 'POST',
-            headers : {
-                "Content-Type": "application/json",
-            },
-            body : JSON.stringify({title : 'kim', price : 123})
-        })
-    })
-
     function deleteItem(id) {
         fetch(`/delete?id=${id}`, {
             method: 'DELETE',
@@ -43,6 +39,10 @@
             .then(()=>{
                 location.reload()
             })
+    }
+
+    function pageClick(e){
+        console.log(e)
     }
 </script>
 </body>
